@@ -63,18 +63,20 @@ const Input = styled.input`
   padding-right: ${($props) => ($props.$isPassword ? '2.5rem' : '1rem')};
   margin-bottom: 1rem;
   border: 2px solid #e0e0e0;
+  background-color: #ffffff;
   border-radius: 6px;
   font-size: 1rem;
   color: #000000;
   height: 45px;
   
   &::placeholder {
-    color: #666666;
+    color: #000;
   }
   
   &:focus {
     outline: none;
     border-color: #6861f2;
+    background-color: #ffffff;
     box-shadow: 0 2px 8px rgba(104, 97, 242, 0.1);
   }
 `
