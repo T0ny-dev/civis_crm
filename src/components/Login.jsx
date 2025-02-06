@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { supabase } from '../utils/supabaseClient'
 import useAuthStore from '../store/authStore'
 import { useNavigate } from 'react-router-dom'
-import { LogIn } from 'lucide-react'
+import { LogIn, Eye, EyeOff } from 'lucide-react'
 
 const LoginContainer = styled.div`
   min-height: 100vh;
@@ -31,17 +31,43 @@ const Title = styled.h1`
   text-align: center;
 `
 
+const InputContainer = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+`
+
+const IconButton = styled.button`
+  position: absolute;
+  right: 1rem;
+  top:-10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #666666;
+  
+  &:hover {
+    color: #6861f2;
+  }
+`
+
 const Input = styled.input`
   width: 100%;
   padding: 0.8rem 1rem;
+  padding-right: ${($props) => ($props.$isPassword ? '2.5rem' : '1rem')};
   margin-bottom: 1rem;
   border: 2px solid #e0e0e0;
   border-radius: 6px;
   font-size: 1rem;
-  background-color: #ffffff;
   color: #000000;
+  height: 45px;
   
-
   &::placeholder {
     color: #666666;
   }
@@ -106,6 +132,7 @@ const LoginForm = styled.form`
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const setUser = useAuthStore((state) => state.setUser)
   const navigate = useNavigate()
 
@@ -124,6 +151,11 @@ const Login = () => {
     }
   }
 
+  const togglePasswordVisibility = (e) => {
+    e.preventDefault()
+    setShowPassword(!showPassword)
+  }
+
   return (
     <LoginContainer>
       <LoginCard>
@@ -137,12 +169,22 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <Input
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <InputContainer>
+            <Input
+              type={showPassword ? "text" : "password"}
+              placeholder="Contraseña"
+              value={password}
+              $isPassword
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <IconButton
+              type="button"
+              onClick={togglePasswordVisibility}
+              aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </IconButton>
+          </InputContainer>
           <Button type="submit">
             <LogIn size={20} />
             Ingresar
